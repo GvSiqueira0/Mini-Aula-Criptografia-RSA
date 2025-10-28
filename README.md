@@ -1,190 +1,302 @@
-# Mini-Aula-Criptografia-RSA
+  # Mini-Aula-Criptografia-RSA
+  
+  🧠 Mini-Aula: Criptografia RSA – Teoria e Prática
+  📘 Introdução à Criptografia
+  
+  A criptografia é o estudo das técnicas que garantem a confidencialidade, integridade e autenticidade das informações.
+  Os algoritmos criptográficos podem ser classificados em dois grandes grupos:
+  
+  Simétricos: usam a mesma chave para criptografar e descriptografar.
+  🔹 Exemplo: AES.
+  
+  Assimétricos (Chave Pública): usam um par de chaves (pública e privada).
+  🔹 Exemplo: RSA.
+  
+  O RSA (Rivest, Shamir, Adleman) foi desenvolvido em 1977 e é amplamente utilizado em protocolos de segurança como SSL, TLS e SSH.
+  
+  🔑 Fundamentos Matemáticos do RSA
+  
+  Números Primos (p, q):
+  Base da segurança do RSA. Quanto maiores forem os primos, mais segura é a criptografia.
+  
+  Função Totiente de Euler (φ):
+  
+  𝜑
+  (
+  𝑛
+  )
+  =
+  (
+  𝑝
+  −
+  1
+  )
+  ×
+  (
+  𝑞
+  −
+  1
+  )
+  φ(n)=(p−1)×(q−1)
+  
+  É usada para determinar a chave privada.
+  
+  Teorema de Euler:
+  Garante que 
+  𝑎
+  𝜑
+  (
+  𝑛
+  )
+  ≡
+  1
+  m
+  o
+  d
+   
+   
+  𝑛
+  a
+  φ(n)
+  ≡1modn, se 
+  𝑎
+  a e 
+  𝑛
+  n forem coprimos.
+  
+  Inverso Modular (d):
+  Satisfaz 
+  𝑒
+  ×
+  𝑑
+  ≡
+  1
+  m
+  o
+  d
+   
+   
+  𝜑
+  (
+  𝑛
+  )
+  e×d≡1modφ(n), e é calculado por algoritmos como o Euclidiano Estendido.
+  
+  ⚙️ Etapas do Algoritmo RSA
+  
+  Escolha de dois primos grandes: 
+  𝑝
+  p e 
+  𝑞
+  q
+  
+  Cálculo de 
+  𝑛
+  =
+  𝑝
+  ×
+  𝑞
+  n=p×q (módulo público)
+  
+  Cálculo de 
+  𝜑
+  (
+  𝑛
+  )
+  φ(n)
+  
+  Escolha de 
+  𝑒
+  e (expoente público, ex: 65537)
+  
+  Cálculo de 
+  𝑑
+  d (inverso modular de 
+  𝑒
+  e)
+  
+  Formação das chaves:
+  
+  🔓 Chave Pública: 
+  (
+  𝑒
+  ,
+  𝑛
+  )
+  (e,n)
+  
+  🔒 Chave Privada: 
+  (
+  𝑑
+  ,
+  𝑛
+  )
+  (d,n)
+  
+  🔐 Criptografia e Descriptografia
+  
+  Criptografia:
+  
+  𝐶
+  =
+  𝑀
+  𝑒
+  m
+  o
+  d
+   
+   
+  𝑛
+  C=M
+  e
+  modn
+  
+  (usa a chave pública)
+  
+  Descriptografia:
+  
+  𝑀
+  =
+  𝐶
+  𝑑
+  m
+  o
+  d
+   
+   
+  𝑛
+  M=C
+  d
+  modn
+  
+  (usa a chave privada)
+  
+  🧩 Segurança e Desafios
+  
+  A segurança do RSA baseia-se na dificuldade de fatorar números grandes (problema da fatoração).
+  
+  Requer alto custo computacional, mas oferece elevada segurança.
+  
+  Padrões modernos recomendam chaves de 2048 bits ou mais.
+  
+  🚫 Limitações
+  
+  Lento em comparação com algoritmos simétricos (como AES).
+  
+  Vulnerável a ataques Side-Channel, Padding Oracle e Timing se mal implementado.
+  
+  ⚠️ Ameaça Quântica
+  
+  Computadores quânticos poderão quebrar RSA usando o algoritmo de Shor, o que motiva pesquisas em criptografia pós-quântica.
 
-🧠 Mini-Aula: Criptografia RSA – Teoria e Prática
-📘 Introdução à Criptografia
+🛠️ Passo a passo: Criando e usando o código RSA em Rust
+1️⃣ Instalar Rust
 
-A criptografia é o estudo das técnicas que garantem a confidencialidade, integridade e autenticidade das informações.
-Os algoritmos criptográficos podem ser classificados em dois grandes grupos:
+Se ainda não tiver Rust, instale pelo site oficial:
 
-Simétricos: usam a mesma chave para criptografar e descriptografar.
-🔹 Exemplo: AES.
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-Assimétricos (Chave Pública): usam um par de chaves (pública e privada).
-🔹 Exemplo: RSA.
+2️⃣ Criar um novo projeto Rust
 
-O RSA (Rivest, Shamir, Adleman) foi desenvolvido em 1977 e é amplamente utilizado em protocolos de segurança como SSL, TLS e SSH.
+cargo new memoria_demo
+cd memoria_demo
 
-🔑 Fundamentos Matemáticos do RSA
+3️⃣ Adicionar dependências no Cargo.toml
 
-Números Primos (p, q):
-Base da segurança do RSA. Quanto maiores forem os primos, mais segura é a criptografia.
+[package]
+name = "memoria_demo"
+version = "0.1.0"
+edition = "2024"
 
-Função Totiente de Euler (φ):
+[dependencies]
+num-bigint = "0.4"
+num-traits = "0.2"
 
-𝜑
-(
-𝑛
-)
-=
-(
-𝑝
-−
-1
-)
-×
-(
-𝑞
-−
-1
-)
-φ(n)=(p−1)×(q−1)
+4️⃣ Criar o código RSA
+Substitua o conteúdo de src/main.rs por:
 
-É usada para determinar a chave privada.
+use num_bigint::{BigUint, ToBigUint};
+use num_traits::{One, Zero};
 
-Teorema de Euler:
-Garante que 
-𝑎
-𝜑
-(
-𝑛
-)
-≡
-1
-m
-o
-d
- 
- 
-𝑛
-a
-φ(n)
-≡1modn, se 
-𝑎
-a e 
-𝑛
-n forem coprimos.
+fn modular_inverse(a: &BigUint, m: &BigUint) -> BigUint {
+    let (mut t, mut new_t) = (BigUint::zero(), BigUint::one());
+    let (mut r, mut new_r) = (m.clone(), a.clone());
 
-Inverso Modular (d):
-Satisfaz 
-𝑒
-×
-𝑑
-≡
-1
-m
-o
-d
- 
- 
-𝜑
-(
-𝑛
-)
-e×d≡1modφ(n), e é calculado por algoritmos como o Euclidiano Estendido.
+    while new_r != BigUint::zero() {
+        let q = &r / &new_r;
 
-⚙️ Etapas do Algoritmo RSA
+        let temp_t = new_t.clone();
+        new_t = if &t > &(&q * &new_t) {
+            (&t - &q * &new_t) % m
+        } else {
+            (m - ((&q * &new_t) - &t) % m) % m
+        };
+        t = temp_t;
 
-Escolha de dois primos grandes: 
-𝑝
-p e 
-𝑞
-q
+        let temp_r = new_r.clone();
+        new_r = &r - &q * &new_r;
+        r = temp_r;
+    }
 
-Cálculo de 
-𝑛
-=
-𝑝
-×
-𝑞
-n=p×q (módulo público)
+    t % m
+}
 
-Cálculo de 
-𝜑
-(
-𝑛
-)
-φ(n)
+fn modular_pow(base: &BigUint, exponent: &BigUint, modulus: &BigUint) -> BigUint {
+    base.modpow(exponent, modulus)
+}
 
-Escolha de 
-𝑒
-e (expoente público, ex: 65537)
+fn generate_rsa_keys() -> ((BigUint, BigUint), (BigUint, BigUint)) {
+    let p = 71u32.to_biguint().unwrap();
+    let q = 67u32.to_biguint().unwrap();
 
-Cálculo de 
-𝑑
-d (inverso modular de 
-𝑒
-e)
+    let n = &p * &q;
+    let phi = (&p - 1u32) * (&q - 1u32);
+    let e = 19u32.to_biguint().unwrap();
+    let d = modular_inverse(&e, &phi);
 
-Formação das chaves:
+    ((n.clone(), e), (n, d))
+}
 
-🔓 Chave Pública: 
-(
-𝑒
-,
-𝑛
-)
-(e,n)
+fn rsa_encrypt(message: &BigUint, public_key: &(BigUint, BigUint)) -> BigUint {
+    let (n, e) = public_key;
+    modular_pow(message, e, n)
+}
 
-🔒 Chave Privada: 
-(
-𝑑
-,
-𝑛
-)
-(d,n)
+fn rsa_decrypt(ciphertext: &BigUint, private_key: &(BigUint, BigUint)) -> BigUint {
+    let (n, d) = private_key;
+    modular_pow(ciphertext, d, n)
+}
 
-🔐 Criptografia e Descriptografia
+fn main() {
+    let (public_key, private_key) = generate_rsa_keys();
 
-Criptografia:
+    println!("==================== RSA DEMO ====================");
+    println!(">>> Chave Pública  : (n = {}, e = {})", public_key.0, public_key.1);
+    println!(">>> Chave Privada  : (n = {}, d = {})", private_key.0, private_key.1);
+    println!("=================================================\n");
 
-𝐶
-=
-𝑀
-𝑒
-m
-o
-d
- 
- 
-𝑛
-C=M
-e
-modn
+    let mensagem = 123u32.to_biguint().unwrap();
+    println!("Mensagem Original: {}", mensagem);
 
-(usa a chave pública)
+    let cifrado = rsa_encrypt(&mensagem, &public_key);
+    println!("Mensagem Criptografada: {}", cifrado);
 
-Descriptografia:
+    let decifrado = rsa_decrypt(&cifrado, &private_key);
+    println!("Mensagem Decifrada   : {}", decifrado);
 
-𝑀
-=
-𝐶
-𝑑
-m
-o
-d
- 
- 
-𝑛
-M=C
-d
-modn
+    println!("\n✅ Operação concluída com sucesso!");
+}
 
-(usa a chave privada)
+5️⃣ Executar o código
+cargo run
 
-🧩 Segurança e Desafios
+Você verá a saída mostrando:
 
-A segurança do RSA baseia-se na dificuldade de fatorar números grandes (problema da fatoração).
+Chave pública e privada
 
-Requer alto custo computacional, mas oferece elevada segurança.
+Mensagem original
 
-Padrões modernos recomendam chaves de 2048 bits ou mais.
+Mensagem criptografada
 
-🚫 Limitações
+Mensagem descriptografada
 
-Lento em comparação com algoritmos simétricos (como AES).
-
-Vulnerável a ataques Side-Channel, Padding Oracle e Timing se mal implementado.
-
-⚠️ Ameaça Quântica
-
-Computadores quânticos poderão quebrar RSA usando o algoritmo de Shor, o que motiva pesquisas em criptografia pós-quântica.
