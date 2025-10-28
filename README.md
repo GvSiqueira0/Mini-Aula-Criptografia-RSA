@@ -190,6 +190,7 @@
   Computadores quânticos poderão quebrar RSA usando o algoritmo de Shor, o que motiva pesquisas em criptografia pós-quântica.
 
 🛠️ Passo a passo: Criando e usando o código RSA em Rust
+
 1️⃣ Instalar Rust
 
 No terminal do Codespace, instale Rust se necessário
