@@ -192,14 +192,15 @@
 🛠️ Passo a passo: Criando e usando o código RSA em Rust
 1️⃣ Instalar Rust
 
-Se ainda não tiver Rust, instale pelo site oficial:
+No terminal do Codespace, instale Rust se necessário
 
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    source $HOME/.cargo/env
 
 2️⃣ Criar um novo projeto Rust
 
-cargo new memoria_demo
-cd memoria_demo
+    cargo new memoria_demo
+    cd memoria_demo
 
 3️⃣ Adicionar dependências no Cargo.toml
 
